@@ -23,6 +23,7 @@ namespace WhoWantsToBeAMillionaireGame
             builder.Services.AddDbContext<WhoWantsToBeAMillionaireGameDbContext>(
                 optionBuilder => optionBuilder.UseSqlServer(connectionString));
 
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             builder.Services.AddControllersWithViews();
 
