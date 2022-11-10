@@ -1,9 +1,14 @@
 using System.Reflection;
 using System.Text;
+using Microsoft.AspNetCore.DataProtection.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
+using WhoWantsToBeAMillionaireGame.Data.Abstractions;
+using WhoWantsToBeAMillionaireGame.Data.Abstractions.Repositories;
+using WhoWantsToBeAMillionaireGame.Data.Repositories;
 using WhoWantsToBeAMillionaireGame.DataBase;
+using WhoWantsToBeAMillionaireGame.DataBase.Entities;
 
 namespace WhoWantsToBeAMillionaireGame
 {
@@ -26,6 +31,14 @@ namespace WhoWantsToBeAMillionaireGame
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             builder.Services.AddControllersWithViews();
+
+            // Add business services
+            
+            // Add repositories
+            builder.Services.AddScoped<IRepository<Question>, Repository<Question>>();
+            builder.Services.AddScoped<IRepository<Answer>, Repository<Answer>>();
+
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             var app = builder.Build();
 

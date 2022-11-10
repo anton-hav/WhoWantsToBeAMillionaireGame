@@ -1,6 +1,4 @@
-﻿using WhoWantsToBeAMillionaireGame.Data.Abstractions;
-
-namespace WhoWantsToBeAMillionaireGame.DataBase.Entities;
+﻿namespace WhoWantsToBeAMillionaireGame.DataBase.Entities;
 
 public class Answer : IBaseEntity
 {
