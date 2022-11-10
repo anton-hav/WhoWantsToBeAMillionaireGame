@@ -1,3 +1,7 @@
+using System.Text;
+using Microsoft.EntityFrameworkCore;
+using WhoWantsToBeAMillionaireGame.DataBase;
+
 namespace WhoWantsToBeAMillionaireGame
 {
     public class Program
@@ -7,6 +11,11 @@ namespace WhoWantsToBeAMillionaireGame
             var builder = WebApplication.CreateBuilder(args);
 
             // Add services to the container.
+            var connectionString = builder.Configuration.GetConnectionString("Default");
+            builder.Services.AddDbContext<WhoWantsToBeAMillionaireGameDbContext>(
+                optionBuilder => optionBuilder.UseSqlServer(connectionString));
+
+
             builder.Services.AddControllersWithViews();
 
             var app = builder.Build();
