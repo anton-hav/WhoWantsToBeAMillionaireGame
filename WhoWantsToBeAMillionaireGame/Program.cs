@@ -4,6 +4,8 @@ using Microsoft.AspNetCore.DataProtection.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
+using WhoWantsToBeAMillionaireGame.Business.ServicesImplementations;
+using WhoWantsToBeAMillionaireGame.Core.Abstractions;
 using WhoWantsToBeAMillionaireGame.Data.Abstractions;
 using WhoWantsToBeAMillionaireGame.Data.Abstractions.Repositories;
 using WhoWantsToBeAMillionaireGame.Data.Repositories;
@@ -33,6 +35,7 @@ namespace WhoWantsToBeAMillionaireGame
             builder.Services.AddControllersWithViews();
 
             // Add business services
+            builder.Services.AddScoped<IQuestionService, QuestionService>();
             
             // Add repositories
             builder.Services.AddScoped<IRepository<Question>, Repository<Question>>();

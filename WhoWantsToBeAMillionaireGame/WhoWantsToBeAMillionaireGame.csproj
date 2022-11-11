@@ -24,6 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\WhoWantsToBeAMillionaireGame.Business\WhoWantsToBeAMillionaireGame.Business.csproj" />
     <ProjectReference Include="..\WhoWantsToBeAMillionaireGame.Data.Abstractions\WhoWantsToBeAMillionaireGame.Data.Abstractions.csproj" />
     <ProjectReference Include="..\WhoWantsToBeAMillionaireGame.Data.Repositories\WhoWantsToBeAMillionaireGame.Data.Repositories.csproj" />
     <ProjectReference Include="..\WhoWantsToBeAMillionaireGame.DataBase\WhoWantsToBeAMillionaireGame.DataBase.csproj" />

@@ -10,4 +10,13 @@
     <Folder Include="ServicesImplementations\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WhoWantsToBeAMillionaireGame.Core\WhoWantsToBeAMillionaireGame.Core.csproj" />
+    <ProjectReference Include="..\WhoWantsToBeAMillionaireGame.Data.Abstractions\WhoWantsToBeAMillionaireGame.Data.Abstractions.csproj" />
+  </ItemGroup>
+
 </Project>

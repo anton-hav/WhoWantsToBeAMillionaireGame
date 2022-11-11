@@ -13,7 +13,7 @@ public class UnitOfWork : IUnitOfWork
     public IRepository<Answer> Answer { get; }
 
     public UnitOfWork(WhoWantsToBeAMillionaireGameDbContext dbContext, 
-        Repository<Question> question, 
+        IRepository<Question> question, 
         IRepository<Answer> answer)
     {
         _dbContext = dbContext;
