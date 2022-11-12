@@ -1,4 +1,5 @@
-﻿using WhoWantsToBeAMillionaireGame.DataBase.Entities;
+﻿using WhoWantsToBeAMillionaireGame.Core;
+using WhoWantsToBeAMillionaireGame.DataBase.Entities;
 
 namespace WhoWantsToBeAMillionaireGame.Data.Abstractions.Repositories;
 
@@ -14,6 +15,7 @@ public interface IRepository<T> where T : IBaseEntity
 
     //UPDATE
     void Update(T entity);
+    Task PatchAsync(Guid id, List<PatchModel> patchData);
 
     //DELETE
     void Remove(T entity);
