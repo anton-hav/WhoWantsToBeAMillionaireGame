@@ -1,5 +1,6 @@
 ﻿using System.Runtime.CompilerServices;
 using AutoMapper;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
 using WhoWantsToBeAMillionaireGame.Core.Abstractions;
@@ -20,11 +21,13 @@ namespace WhoWantsToBeAMillionaireGame.Controllers
             _questionService = questionService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
             try
             {
-                return View();
+                var dto = await _questionService.GetAllQuestionAsync();
+                var model = _mapper.Map<List<QuestionModel>>(dto);
+                return View(model);
             }
             catch (Exception ex)
             {
@@ -38,14 +41,21 @@ namespace WhoWantsToBeAMillionaireGame.Controllers
         {
             try
             {
-                var model = new QuestionModel();
-
-                model.Answers = new List<AnswerDto>(4);
-
-                for (var i = 1; i <= 4; i++)
+                var model = new QuestionModel()
                 {
-                    model.Answers.Add(new AnswerDto());
-                }
+                    Id = Guid.NewGuid(),
+                    IsEnable = true
+                };
+
+                model.Answers = new List<AnswerDto>
+                {
+                    new AnswerDto() { Id = Guid.NewGuid(), QuestionId = model.Id, IsCorrect = true },
+                    new AnswerDto() { Id = Guid.NewGuid(), QuestionId = model.Id, IsCorrect = false },
+                    new AnswerDto() { Id = Guid.NewGuid(), QuestionId = model.Id, IsCorrect = false },
+                    new AnswerDto() { Id = Guid.NewGuid(), QuestionId = model.Id, IsCorrect = false },
+                };
+
+
                 return View(model);
             }
             catch (Exception ex)
@@ -62,7 +72,6 @@ namespace WhoWantsToBeAMillionaireGame.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    model.Id = Guid.NewGuid();
                     var dto = _mapper.Map<QuestionDto>(model);
                     await _questionService.CreateQuestionAsync(dto);
                     return RedirectToAction("Index", "Question");
@@ -78,14 +87,16 @@ namespace WhoWantsToBeAMillionaireGame.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CheckQuestionForCreateOrEdit(string text, List<AnswerDto> answers, Guid id)
+        public async Task<IActionResult> CheckQuestionForCreateOrEdit(string text, Guid id)
         {
             try
             {
-                var isQuestionValid = await IsQuestionValidAsync(id, text);
-                var isAnswersValid = IsAnswersValid(answers);
 
-                return Ok(isQuestionValid && isAnswersValid);
+                var isQuestionValid = await IsQuestionValidAsync(id, text);
+                if (!isQuestionValid)
+                    return Ok(false);
+
+                return Ok(true);
             }
             catch (Exception e)
             {
@@ -115,13 +126,83 @@ namespace WhoWantsToBeAMillionaireGame.Controllers
                 var dto = await _questionService.GetQuestionByIdAsync(questionId);
                 return dto.Text.Equals(questionText);
             }
+        }
 
-            bool IsAnswersValid(List<AnswerDto> answrs)
+        [HttpGet]
+        public async Task<IActionResult> Enable(Guid id)
+        {
+            try
             {
-                var result = answrs.GroupBy(answer => answer.Text)
-                    .SelectMany(grp => grp.Skip(1)).Count();
+                if (id == Guid.Empty)
+                {
+                    throw new ArgumentException(nameof(id));
+                }
 
-                return result == 0;
+                await _questionService.ChangeAvailabilityAsync(id, true);
+
+                return RedirectToAction("Index", "Question");
+            }
+            catch (ArgumentException ex)
+            {
+                Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+                return StatusCode(500);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Disable(Guid id)
+        {
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    throw new ArgumentException(nameof(id));
+                }
+
+                await _questionService.ChangeAvailabilityAsync(id, false);
+
+                return RedirectToAction("Index", "Question");
+            }
+            catch (ArgumentException ex)
+            {
+                Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+                return StatusCode(500);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Delete(Guid id)
+        {
+            try
+            {
+                if (id == Guid.Empty)
+                {
+                    throw new ArgumentException(nameof(id));
+                }
+                
+                await _questionService.DeleteAsync(id);
+
+                return RedirectToAction("Index", "Question");
+            }
+            catch (ArgumentException ex)
+            {
+                Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+                return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+                return StatusCode(500);
             }
         }
 

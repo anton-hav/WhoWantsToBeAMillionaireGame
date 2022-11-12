@@ -1,5 +1,77 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@{
+    Layout = "_Layout";
+}
+@model IEnumerable<QuestionModel>
+
 @{
+    ViewData["Title"] = "Questions";
+}
+
+<h2>Visits</h2>
+
+<a type="button" class="btn btn-link" asp-controller="Question" asp-action="Create">Create new</a>
+
+@if (Model.Any())
+{
+    var headerText = "";
+    foreach (var status in new[] {true, false})
+    {
+        if (status)
+        {
+            headerText = "Questions available in the game";
+        }
+        else
+        {
+            headerText = "Questions unavailable in the game";
+        }
+
+        if (Model.Any(question => question.IsEnable.Equals(status)))
+        {
+            <div class="row m-3">
+                <h3>@headerText</h3>
+                
+                <table class="table table-sm">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Question</th>
+                        <th>Actions</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @{
+                        var i = 1;
+                        foreach (var item in Model)
+                        {
+                            if (item.IsEnable.Equals(status))
+                            {
+                                <tr class="align-middle">
+                                    <td>@i</td>
+                                    <td>@item.Text</td>
+                                    <td>
+                                        <div class="btn-group" role="group" aria-label="Actions">
+                                            @if (status)
+                                            {
+                                                <a type="button" class="btn btn-link" asp-controller="Question" asp-action="Disable" asp-route-id="@item.Id">Disable</a>
+                                            }
+                                            else
+                                            {
+                                                <a type="button" class="btn btn-link" asp-controller="Question" asp-action="Enable" asp-route-id="@item.Id">Enable</a>
+                                            }
+                                            <a type="button" class="btn btn-link" asp-controller="Question" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                                        </div>
+                                    </td>
+                                </tr>
+                                    i++;
+                            }
+                        }
+                    }
+                    </tbody>
+                </table>
+            </div>
+        }
+    }
+
+    
+    
 }

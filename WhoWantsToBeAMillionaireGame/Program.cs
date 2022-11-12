@@ -36,6 +36,7 @@ namespace WhoWantsToBeAMillionaireGame
 
             // Add business services
             builder.Services.AddScoped<IQuestionService, QuestionService>();
+            builder.Services.AddScoped<IAnswerService, AnswerService>();
             
             // Add repositories
             builder.Services.AddScoped<IRepository<Question>, Repository<Question>>();

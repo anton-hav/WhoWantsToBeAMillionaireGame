@@ -6,6 +6,7 @@ public interface IQuestionService
 {
     //READ
     Task<QuestionDto> GetQuestionByIdAsync(Guid id);
+    Task<List<QuestionDto>> GetAllQuestionAsync();
     Task<bool> IsQuestionExistAsync(string text);
 
     //CREATE
@@ -13,5 +14,9 @@ public interface IQuestionService
 
     //UPDATE
     Task<int> UpdateAsync(Guid id, QuestionDto dto);
+    Task<int> ChangeAvailabilityAsync(Guid id, bool newValue);
+
+    //REMOVE
+    Task<int> DeleteAsync(Guid id);
 
 }
