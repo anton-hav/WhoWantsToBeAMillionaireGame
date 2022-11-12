@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.Data;
 using System.Numerics;
+using System.Reflection.Emit;
 using System.Reflection.PortableExecutable;
 using WhoWantsToBeAMillionaireGame.DataBase.Entities;
 
@@ -22,19 +23,7 @@ public class WhoWantsToBeAMillionaireGameDbContext : DbContext
                 answer.Text,
                 answer.QuestionId
             })
-            .IsUnique();
-
-        // Disable cascade deletion
-        // Note by Anton: Cascade deletion is not bad for this project,
-        // but I prefer to control the deletion process
-        var cascadeFKs = builder.Model
-            .GetEntityTypes()
-            .SelectMany(t => t.GetForeignKeys())
-            .Where(fk => !fk.IsOwnership
-                         && fk.DeleteBehavior == DeleteBehavior.Cascade);
-
-        foreach (var fk in cascadeFKs)
-            fk.DeleteBehavior = DeleteBehavior.Restrict;
+        .IsUnique();
 
         base.OnModelCreating(builder);
     }
