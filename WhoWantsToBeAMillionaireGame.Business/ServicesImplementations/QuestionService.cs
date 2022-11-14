@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using WhoWantsToBeAMillionaireGame.Core;
 using WhoWantsToBeAMillionaireGame.Core.Abstractions;
 using WhoWantsToBeAMillionaireGame.Core.DataTransferObjects;
@@ -13,14 +14,17 @@ public class QuestionService : IQuestionService
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
     private readonly IAnswerService _answerService;
+    private readonly ISourceService _sourceService;
 
-    public QuestionService(IMapper mapper, 
-        IUnitOfWork unitOfWork, 
-        IAnswerService answerService)
+    public QuestionService(IMapper mapper,
+        IUnitOfWork unitOfWork,
+        IAnswerService answerService,
+        ISourceService sourceService)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
         _answerService = answerService;
+        _sourceService = sourceService;
     }
 
     public async Task<QuestionDto> GetQuestionByIdAsync(Guid id)
@@ -68,6 +72,26 @@ public class QuestionService : IQuestionService
 
         var result = await _unitOfWork.Commit();
         return result;
+    }
+
+    public async Task<int> AggregateQuestionsFromExternalSourceAsync()
+    {
+        var list = await _sourceService.GetQuestionsFromSourceAsync();
+        if (list.IsNullOrEmpty()) return 0;
+
+        var entities = new List<Question>();
+        foreach (var dto in list)
+        {
+            var isExist = await IsQuestionExistAsync(dto.Text);
+            if (!isExist)
+            {
+                entities.Add(_mapper.Map<Question>(dto));
+            }
+        }
+
+        await _unitOfWork.Question.AddRangeAsync(entities);
+
+        return await _unitOfWork.Commit();
     }
 
     public async Task<int> UpdateAsync(Guid id, QuestionDto dto)

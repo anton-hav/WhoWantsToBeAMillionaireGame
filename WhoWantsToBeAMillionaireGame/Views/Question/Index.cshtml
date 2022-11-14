@@ -9,7 +9,18 @@
 
 <h2>Visits</h2>
 
-<a type="button" class="btn btn-link" asp-controller="Question" asp-action="Create">Create new</a>
+<div class="d-flex mb-3">
+    <div class="p-2">
+        <a type="button" class="btn btn-link" asp-controller="Question" asp-action="Create">Create new</a>
+    </div>
+    <div class="ms-auto p-2">
+        <a type="button" class="btn btn-primary" asp-controller="Question" asp-action="AddQuestionsFromSourceFile">Load questions from source</a>
+    </div>
+</div>
+
+
+
+
 
 @if (Model.Any())
 {

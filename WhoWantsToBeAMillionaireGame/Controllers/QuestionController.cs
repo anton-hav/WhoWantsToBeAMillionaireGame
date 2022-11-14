@@ -13,12 +13,15 @@ namespace WhoWantsToBeAMillionaireGame.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IQuestionService _questionService;
+        private readonly IConfiguration _configuration;
 
         public QuestionController(IMapper mapper, 
-            IQuestionService questionService)
+            IQuestionService questionService, 
+            IConfiguration configuration)
         {
             _mapper = mapper;
             _questionService = questionService;
+            _configuration = configuration;
         }
 
         public async Task<IActionResult> Index()
@@ -198,6 +201,21 @@ namespace WhoWantsToBeAMillionaireGame.Controllers
             {
                 Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
                 return BadRequest();
+            }
+            catch (Exception ex)
+            {
+                Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+                return StatusCode(500);
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> AddQuestionsFromSourceFile()
+        {
+            try
+            {
+                await _questionService.AggregateQuestionsFromExternalSourceAsync();
+                return RedirectToAction("Index", "Question");
             }
             catch (Exception ex)
             {

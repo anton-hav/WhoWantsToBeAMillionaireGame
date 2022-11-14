@@ -11,6 +11,7 @@ public interface IQuestionService
 
     //CREATE
     Task<int> CreateQuestionAsync(QuestionDto dto);
+    Task<int> AggregateQuestionsFromExternalSourceAsync();
 
     //UPDATE
     Task<int> UpdateAsync(Guid id, QuestionDto dto);
