@@ -8,6 +8,7 @@ public interface IQuestionService
     Task<QuestionDto> GetQuestionByIdAsync(Guid id);
     Task<List<QuestionDto>> GetAllQuestionAsync();
     Task<bool> IsQuestionExistAsync(string text);
+    Task<List<QuestionDto>> GetRandomizedPoolOfQuestionsForGame();
 
     //CREATE
     Task<int> CreateQuestionAsync(QuestionDto dto);

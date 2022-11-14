@@ -61,6 +61,24 @@ public class QuestionService : IQuestionService
         return entity != null;
     }
 
+    public async Task<List<QuestionDto>> GetRandomizedPoolOfQuestionsForGame()
+    {
+        var list = await _unitOfWork.Question
+            .Get()
+            .Where(question => question.IsEnable.Equals(true))
+            .OrderBy(question => Guid.NewGuid())
+            .Take(15)
+            .Include(question => question.Answers)
+            .AsNoTracking()
+            .Select(question => _mapper.Map<QuestionDto>(question))
+            .ToListAsync();
+
+        if (list.IsNullOrEmpty())
+            throw new Exception("Database don't contains any question. Please add questions to database");
+
+        return list;
+    }
+
     public async Task<int> CreateQuestionAsync(QuestionDto dto)
     {
         var entity = _mapper.Map<Question>(dto);

@@ -11,7 +11,7 @@ public class QuestionModel : IValidatableObject
     [Required]
     [Remote("CheckQuestionForCreateOrEdit", "Question",
         AdditionalFields = nameof(Id),
-    HttpMethod = WebRequestMethods.Http.Post,
+        HttpMethod = WebRequestMethods.Http.Post,
         ErrorMessage = "The question with the same text already exist.")]
     public string Text { get; set; }
     public bool IsEnable { get; set; }

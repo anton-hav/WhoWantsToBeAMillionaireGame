@@ -1,0 +1,61 @@
+﻿@{
+    Layout = "_Layout";
+}
+@model IEnumerable<QuestionModel>
+
+@{
+    ViewData["Title"] = "Questions";
+}
+
+<h2>Game</h2>
+
+<div class="d-flex mb-3">
+    <div class="p-2">
+        <a type="button" class="btn btn-link" asp-controller="Question" asp-action="Create">Create new</a>
+    </div>
+    <div class="ms-auto p-2">
+        <a type="button" class="btn btn-primary" asp-controller="Question" asp-action="AddQuestionsFromSourceFile">Load questions from source</a>
+    </div>
+</div>
+
+
+<div id="question_answer" class="col-xs-12 question_answer" style="">
+    <div class="quest">
+        <span>Someone who scores a high mark on a test is said to "pass with flying" what?</span>
+    </div>
+    <div class="answ_block">
+        <div class="answ_row clearfix">
+            <div class="answ answer ahov">
+                <div class="answ_inside">
+                    <div class="answ_text">
+                        <span class="ans_1"><i></i>А:</span> <span class="ans_2">Tigers</span>
+                    </div>
+                </div>
+            </div>
+            <div class="answ answer ahov">
+                <div class="answ_inside">
+                    <div class="answ_text">
+                        <span class="ans_1"><i></i>В:</span> <span class="ans_2">Kites</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="number_center">2</div>
+        <div class="answ_row clearfix">
+            <div class="answ answer ahov">
+                <div class="answ_inside">
+                    <div class="answ_text">
+                        <span class="ans_1"><i></i>С:</span> <span class="ans_2">Wallendas</span>
+                    </div>
+                </div>
+            </div>
+            <div class="answ answer ahov">
+                <div class="answ_inside">
+                    <div class="answ_text">
+                        <span class="ans_1"><i></i>D:</span> <span class="ans_2">Colors</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
