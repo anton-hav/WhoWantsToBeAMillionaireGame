@@ -39,7 +39,7 @@ However, you must first specify the correct path to the file. To do this, you mu
 ```
 
 ## Key features:
-ASP.Net Core MVC, Entity Framework Core, Microsoft SQL Server C#, Serilog, Automapper, Newtonsoft Json.Net, Dependepcy Injection, Bootstrap
+ASP.Net Core MVC, Entity Framework Core, Microsoft SQL Server C#, Serilog, Automapper, Newtonsoft Json.Net, Dependepcy Injection, Generic Repository, Unit of Work, Bootstrap
 
 
 
