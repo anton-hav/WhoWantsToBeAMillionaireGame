@@ -31,20 +31,26 @@ namespace WhoWantsToBeAMillionaireGame
                 optionBuilder => optionBuilder.UseSqlServer(connectionString));
 
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
-
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddDistributedMemoryCache();
+            builder.Services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromMinutes(10);
+                options.Cookie.Name = ".Game.Session";
+                options.Cookie.IsEssential = true;
+            });
             builder.Services.AddControllersWithViews();
 
             // Add business services
             builder.Services.AddScoped<IQuestionService, QuestionService>();
             builder.Services.AddScoped<IAnswerService, AnswerService>();
             builder.Services.AddScoped<ISourceService, JsonFileSourceService>();
+            builder.Services.AddScoped<IGameService, GameService>();
             
             // Add repositories
             builder.Services.AddScoped<IRepository<Question>, Repository<Question>>();
             builder.Services.AddScoped<IRepository<Answer>, Repository<Answer>>();
-
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+            
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -61,6 +67,8 @@ namespace WhoWantsToBeAMillionaireGame
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseSession();
 
             app.MapControllerRoute(
                 name: "default",
