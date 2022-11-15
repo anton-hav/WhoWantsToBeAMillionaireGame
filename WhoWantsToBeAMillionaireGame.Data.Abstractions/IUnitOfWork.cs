@@ -8,6 +8,7 @@ public interface IUnitOfWork
     IRepository<Question> Question { get; }
     IRepository<Answer> Answer { get; }
     IRepository<Game> Game { get; }
+    IRepository<GameQuestion> GameQuestion { get; }
 
     Task<int> Commit();
 }

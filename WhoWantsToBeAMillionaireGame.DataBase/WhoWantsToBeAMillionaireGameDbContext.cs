@@ -12,6 +12,7 @@ public class WhoWantsToBeAMillionaireGameDbContext : DbContext
     public DbSet<Question> Question { get; set; }
     public DbSet<Answer> Answer { get; set; }
     public DbSet<Game> Game { get; set; }
+    public DbSet<GameQuestion> GameQuestions { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -25,6 +26,13 @@ public class WhoWantsToBeAMillionaireGameDbContext : DbContext
                 answer.QuestionId
             })
         .IsUnique();
+
+        builder.Entity<GameQuestion>()
+            .HasIndex(gameQuestion => new
+            {
+                gameQuestion.GameId,
+                gameQuestion.QuestionId
+            });
 
         base.OnModelCreating(builder);
     }

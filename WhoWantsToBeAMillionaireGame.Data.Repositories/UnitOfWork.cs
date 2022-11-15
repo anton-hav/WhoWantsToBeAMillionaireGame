@@ -12,16 +12,19 @@ public class UnitOfWork : IUnitOfWork
     public IRepository<Question> Question { get; }
     public IRepository<Answer> Answer { get; }
     public IRepository<Game> Game { get; }
+    public IRepository<GameQuestion> GameQuestion { get; }
 
     public UnitOfWork(WhoWantsToBeAMillionaireGameDbContext dbContext, 
         IRepository<Question> question, 
         IRepository<Answer> answer, 
-        IRepository<Game> game)
+        IRepository<Game> game, 
+        IRepository<GameQuestion> gameQuestion)
     {
         _dbContext = dbContext;
         Question = question;
         Answer = answer;
         Game = game;
+        GameQuestion = gameQuestion;
     }
     
     public async Task<int> Commit()
