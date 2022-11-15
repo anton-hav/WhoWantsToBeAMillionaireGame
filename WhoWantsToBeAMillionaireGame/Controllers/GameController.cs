@@ -1,25 +1,31 @@
-﻿using AutoMapper;
+﻿using System.Net;
+using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using WhoWantsToBeAMillionaireGame.Core.Abstractions;
+using WhoWantsToBeAMillionaireGame.Models;
 
 namespace WhoWantsToBeAMillionaireGame.Controllers
 {
     public class GameController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly IQuestionService _questionService;
+        private readonly IGameService _gameService;
 
         public GameController(IMapper mapper, 
-            IQuestionService questionService)
+            IGameService gameService)
         {
             _mapper = mapper;
-            _questionService = questionService;
+            _gameService = gameService;
         }
 
         public async Task<IActionResult> Index()
         {
-            var list = await _questionService.GetRandomizedPoolOfQuestionsForGame();
-            return View();
+            HttpContext.Session.SetString("GameId", Guid.NewGuid().ToString("D"));
+
+            var dto = await _gameService.GetNewGameDataAsync();
+            //todo: if the GameModel is the same GameDto remove mapping and use GameDto directly
+            var model = _mapper.Map<GameModel>(dto);
+            return View(model);
         }
     }
 }

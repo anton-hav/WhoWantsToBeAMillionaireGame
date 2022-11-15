@@ -4,5 +4,6 @@ namespace WhoWantsToBeAMillionaireGame.Models;
 
 public class GameModel
 {
-    public QuestionDto Question { get; set; }
+    public Stack<QuestionDto> Questions { get; set; }
+
 }
