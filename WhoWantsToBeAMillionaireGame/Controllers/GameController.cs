@@ -1,7 +1,9 @@
 ﻿using System.Net;
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using WhoWantsToBeAMillionaireGame.Core.Abstractions;
+using WhoWantsToBeAMillionaireGame.Extensions;
 using WhoWantsToBeAMillionaireGame.Models;
 
 namespace WhoWantsToBeAMillionaireGame.Controllers
@@ -10,6 +12,8 @@ namespace WhoWantsToBeAMillionaireGame.Controllers
     {
         private readonly IMapper _mapper;
         private readonly IGameService _gameService;
+
+        private const string SessionKeyGameId = "_GameId";
 
         public GameController(IMapper mapper, 
             IGameService gameService)
@@ -20,11 +24,18 @@ namespace WhoWantsToBeAMillionaireGame.Controllers
 
         public async Task<IActionResult> Index()
         {
-            HttpContext.Session.SetString("GameId", Guid.NewGuid().ToString("D"));
+            var gameId = HttpContext.Session.Get<Guid>(SessionKeyGameId);
 
-            var dto = await _gameService.GetNewGameDataAsync();
-            //todo: if the GameModel is the same GameDto remove mapping and use GameDto directly
+            if (gameId.Equals(Guid.Empty))
+            {
+                gameId = Guid.NewGuid();
+                HttpContext.Session.Set<Guid>(SessionKeyGameId, gameId);
+                await _gameService.CreateNewGameAsync(gameId);
+            }
+
+            var dto = await _gameService.GetGameById(gameId);
             var model = _mapper.Map<GameModel>(dto);
+
             return View(model);
         }
     }

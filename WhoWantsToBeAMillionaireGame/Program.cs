@@ -50,6 +50,8 @@ namespace WhoWantsToBeAMillionaireGame
             // Add repositories
             builder.Services.AddScoped<IRepository<Question>, Repository<Question>>();
             builder.Services.AddScoped<IRepository<Answer>, Repository<Answer>>();
+            builder.Services.AddScoped<IRepository<Game>, Repository<Game>>();
+            builder.Services.AddScoped<IRepository<GameQuestion>, Repository<GameQuestion>>();
             
             var app = builder.Build();
 

@@ -5,14 +5,12 @@ using WhoWantsToBeAMillionaireGame.Models;
 
 namespace WhoWantsToBeAMillionaireGame.MappingProfiles;
 
-public class GameProfile : Profile
+public class GameQuestionProfile : Profile
 {
-    public GameProfile()
+    public GameQuestionProfile()
     {
-        CreateMap<Game, GameDto>();
-        CreateMap<GameDto, Game>();
+        CreateMap<GameQuestion, GameQuestionDto>();
+        CreateMap<GameQuestionDto, GameQuestion>();
 
-        CreateMap<GameDto, GameModel>();
-        CreateMap<GameModel, GameDto>();
     }
 }
