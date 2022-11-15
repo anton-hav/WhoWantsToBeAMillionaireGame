@@ -11,6 +11,7 @@ public class WhoWantsToBeAMillionaireGameDbContext : DbContext
 {
     public DbSet<Question> Question { get; set; }
     public DbSet<Answer> Answer { get; set; }
+    public DbSet<Game> Game { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

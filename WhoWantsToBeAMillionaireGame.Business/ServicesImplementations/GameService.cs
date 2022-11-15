@@ -17,14 +17,11 @@ public class GameService : IGameService
         _questionService = questionService;
     }
 
-    public async Task<GameDto> GetNewGameDataAsync()
+    public async Task<GameDto> CreateNewGameAsync(Guid id)
     {
         var questions = await _questionService.GetRandomizedPoolOfQuestionsForGame();
 
-        var game = new GameDto()
-        {
-            Questions = new Stack<QuestionDto>(questions),
-        };
+        var game = new GameDto();
 
         return game;
 

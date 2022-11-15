@@ -2,5 +2,5 @@
 
 public class GameDto
 {
-    public Stack<QuestionDto> Questions { get; set; }
+    public Guid Id { get; set; }
 }

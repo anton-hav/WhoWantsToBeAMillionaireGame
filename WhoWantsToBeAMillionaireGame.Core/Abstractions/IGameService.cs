@@ -4,5 +4,5 @@ namespace WhoWantsToBeAMillionaireGame.Core.Abstractions;
 
 public interface IGameService
 {
-    Task<GameDto> GetNewGameDataAsync();
+    Task<GameDto> CreateNewGameAsync(Guid id);
 }

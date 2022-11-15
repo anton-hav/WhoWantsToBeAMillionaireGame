@@ -7,6 +7,7 @@ public interface IUnitOfWork
 {
     IRepository<Question> Question { get; }
     IRepository<Answer> Answer { get; }
+    IRepository<Game> Game { get; }
 
     Task<int> Commit();
 }
