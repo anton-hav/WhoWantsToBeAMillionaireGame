@@ -30,8 +30,4 @@
     <ProjectReference Include="..\WhoWantsToBeAMillionaireGame.DataBase\WhoWantsToBeAMillionaireGame.DataBase.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Extensions\" />
-  </ItemGroup>
-
 </Project>

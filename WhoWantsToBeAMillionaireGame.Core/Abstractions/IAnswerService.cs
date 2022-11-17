@@ -7,6 +7,7 @@ public interface IAnswerService
     //READ
     Task<AnswerDto> GetAnswerByIdAsync(Guid id);
     Task<bool> IsAnswerExistAsync(string text);
+    Task<bool> IsAnswerCorrect(Guid id);
 
     //CREATE
     Task<int> CreateAnswerAsync(AnswerDto dto);

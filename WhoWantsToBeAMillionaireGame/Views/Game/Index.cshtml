@@ -9,49 +9,89 @@
 
 <h2>Game</h2>
 
-<form asp-controller="Game" asp-action="Index" method="post">
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div id="question_answer" class="col-xs-12 question_answer">
-        <div class="quest">
-            <span>@Model.GameQuestion.Question.Text</span>
+<div class="container">
+
+    <div class="row">
+        <div class="col-8 align-self-end">
+            <div class="col mb-2 align-self-center text-center">
+                <span class="fs-2" id="message"></span>
+            </div>
+
+            <div class="mb-5 pb-5">
+                <div class="d-grid gap-2 col-6 offset-md-5">
+                    <a type="button" class="btn btn-danger round-button-game-over" asp-controller="Game" asp-action="GameOver" hidden id="game-over-button">Game over</a>
+                </div>
+                <div class="d-grid gap-2 col-6 offset-md-5">
+                    <button type="button" class="btn btn-success round-button-success" onclick="showNewQuestion()" hidden id="next-step-button">Go next</button>
+                </div>
+                <div class="d-grid gap-2 col-6 offset-md-5">
+                    <a type="button" class="btn btn-warning round-button-winner" asp-controller="Game" asp-action="GameOver" hidden id="win-button">Win</a>
+                </div>
+            </div>
+
+
+            <div>
+                <div class="col align-self-center text-center">
+                    <span class="fs-2" id="question">@Model.GameQuestion.Question.Text</span>
+                </div>
+
+                <div class="table-responsive" id="math-panel">
+                    <table class="table table-borderless">
+                        <tbody>
+                        <tr>
+                            <partial name="_AnswerButton" model='new AnswerButtonModel { Answer = @Model.GameQuestion.Question.Answers[0], IdName = "A" }'/>
+                            <partial name="_AnswerButton" model='new AnswerButtonModel { Answer = @Model.GameQuestion.Question.Answers[2], IdName = "C" }'/>
+
+                        </tr>
+                        <tr>
+                            <partial name="_AnswerButton" model='new AnswerButtonModel { Answer = @Model.GameQuestion.Question.Answers[1], IdName = "B" }'/>
+                            <partial name="_AnswerButton" model='new AnswerButtonModel { Answer = @Model.GameQuestion.Question.Answers[3], IdName = "D" }'/>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
         </div>
-        <div class="answ_block">
-            <div class="answ_row clearfix">
-                <div class="answ answer ahov">
-                    <div class="answ_inside">
-                        <div class="answ_text">
-                            <span class="ans_1"><i></i>А:</span> <span class="ans_2">@Model.GameQuestion.Question.Answers[0].Text</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="answ answer ahov">
-                    <div class="answ_inside">
-                        <div class="answ_text">
-                            <span class="ans_1"><i></i>В:</span> <span class="ans_2">@Model.GameQuestion.Question.Answers[1].Text</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="number_center">2</div>
-            <div class="answ_row clearfix">
-                <div class="answ answer ahov">
-                    <div class="answ_inside">
-                        <div class="answ_text">
-                            <span class="ans_1"><i></i>С:</span> <span class="ans_2">@Model.GameQuestion.Question.Answers[2].Text</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="answ answer ahov">
-                    <div class="answ_inside">
-                        <div class="answ_text">
-                            <span class="ans_1"><i></i>D:</span> <span class="ans_2">@Model.GameQuestion.Question.Answers[3].Text</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+
+        <div class="col-4">
+            <table class="table table-borderless">
+                <tbody>
+                @{
+                    var winnings = new List<int> { 1000000, 500000, 250000, 125000, 64000, 32000, 16000, 8000, 4000, 2000, 1000, 500, 300, 200, 100 };
+                    var i = 15;
+                    foreach (var winning in winnings)
+                    {
+                        <partial name="_StepItem" model='(i, winning)'/>
+                        i--;
+                    }
+                }
+                </tbody>
+            </table>
         </div>
     </div>
+    
+</div>
 
-</form>
 
+
+@section Scripts
+{
+    <script type="text/javascript">
+        function getUserChoiceFromModel() {            
+
+            let userChoice = "@Model.UserChoice";
+
+            return userChoice;
+        }        
+    </script>
+    
+    <script src="~/js/api-tools.js" asp-append-version="true"></script>
+    <script src="~/js/main-message-display-tools.js" asp-append-version="true"></script>
+    <script src="~/js/switch-visible-for-button.js" asp-append-version="true"></script>
+    <script src="~/js/answer-buttons-tools.js" asp-append-version="true"></script>
+    <script src="~/js/winnings-bar-tools.js" asp-append-version="true"></script>
+    <script src="~/js/validate-user-choice-correct.js" asp-append-version="true"></script>
+    <script src="~/js/next-step.js" asp-append-version="true"></script>
+}
 

@@ -27,6 +27,14 @@ public class AnswerService : IAnswerService
         throw new NotImplementedException();
     }
 
+    public async Task<bool> IsAnswerCorrect(Guid id)
+    {
+        var entity = await _unitOfWork.Answer.GetByIdAsync(id);
+        if (entity == null) throw new ArgumentException("The answer does not exist in the database.");
+
+        return entity.IsCorrect;
+    }
+
     public async Task<int> CreateAnswerAsync(AnswerDto dto)
     {
         throw new NotImplementedException();
