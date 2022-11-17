@@ -28,7 +28,7 @@ public static class SessionExtensions
                 return true;
             }
         };
-        value = default(T);
+        value = default(T)!;
         
         return false;
     }

@@ -13,17 +13,14 @@ public class QuestionService : IQuestionService
 {
     private readonly IMapper _mapper;
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IAnswerService _answerService;
     private readonly ISourceService _sourceService;
 
     public QuestionService(IMapper mapper,
         IUnitOfWork unitOfWork,
-        IAnswerService answerService,
         ISourceService sourceService)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
-        _answerService = answerService;
         _sourceService = sourceService;
     }
 
@@ -36,10 +33,8 @@ public class QuestionService : IQuestionService
             var dto = _mapper.Map<QuestionDto>(entity);
             return dto;
         }
-        else
-        {
-            throw new ArgumentException(nameof(id));
-        }
+
+        throw new ArgumentException(nameof(id));
     }
 
     // todo: implement it with pagination page because GetAll is a bad way
@@ -98,36 +93,25 @@ public class QuestionService : IQuestionService
         if (list.IsNullOrEmpty()) return 0;
 
         var entities = new List<Question>();
-        foreach (var dto in list)
-        {
-            var isExist = await IsQuestionExistAsync(dto.Text);
-            if (!isExist)
+
+        if (list != null)
+            foreach (var dto in list)
             {
-                entities.Add(_mapper.Map<Question>(dto));
+                var isExist = await IsQuestionExistAsync(dto.Text);
+                if (!isExist) entities.Add(_mapper.Map<Question>(dto));
             }
-        }
 
         await _unitOfWork.Question.AddRangeAsync(entities);
 
         return await _unitOfWork.Commit();
     }
 
-    public async Task<int> UpdateAsync(Guid id, QuestionDto dto)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<int> ChangeAvailabilityAsync(Guid id, bool newValue)
     {
         var dto = await GetQuestionByIdAsync(id);
         var patchList = new List<PatchModel>();
-        if (dto != null)
-        {
-            if (!dto.IsEnable.Equals(newValue))
-            {
-                patchList.Add(new PatchModel() { PropertyName = nameof(dto.IsEnable), PropertyValue = newValue });
-            }
-        }
+        if (!dto.IsEnable.Equals(newValue))
+            patchList.Add(new PatchModel { PropertyName = nameof(dto.IsEnable), PropertyValue = newValue });
 
         await _unitOfWork.Question.PatchAsync(id, patchList);
         return await _unitOfWork.Commit();
@@ -144,9 +128,7 @@ public class QuestionService : IQuestionService
             _unitOfWork.Question.Remove(entity);
             return await _unitOfWork.Commit();
         }
-        else
-        {
-            throw new ArgumentException(nameof(id));
-        }
+
+        throw new ArgumentException(nameof(id));
     }
 }

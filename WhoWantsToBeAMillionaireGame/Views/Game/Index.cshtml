@@ -32,29 +32,32 @@
             <div class="d-grid gap-2 col">
                 <button type="button" class="btn btn-secondary" onclick="giveMeMyMoney()" hidden id="give-me-my-money">Give me my money</button>
             </div>
+            @{
+                if (Model.GameQuestion != null)
+                {
+                    <div>
+                        <div class="col align-self-center text-center">
+                            <span class="fs-2" id="question">@Model.GameQuestion.Question.Text</span>
+                        </div>
 
-            <div>
-                <div class="col align-self-center text-center">
-                    <span class="fs-2" id="question">@Model.GameQuestion.Question.Text</span>
-                </div>
+                        <div class="table-responsive" id="math-panel">
+                            <table class="table table-borderless">
+                                <tbody>
+                                <tr>
+                                    <partial name="_AnswerButton" model='new AnswerButtonModel { Answer = @Model.GameQuestion.Question.Answers[0], IdName = "A" }'/>
+                                    <partial name="_AnswerButton" model='new AnswerButtonModel { Answer = @Model.GameQuestion.Question.Answers[2], IdName = "C" }'/>
 
-                <div class="table-responsive" id="math-panel">
-                    <table class="table table-borderless">
-                        <tbody>
-                        <tr>
-                            <partial name="_AnswerButton" model='new AnswerButtonModel { Answer = @Model.GameQuestion.Question.Answers[0], IdName = "A" }'/>
-                            <partial name="_AnswerButton" model='new AnswerButtonModel { Answer = @Model.GameQuestion.Question.Answers[2], IdName = "C" }'/>
-
-                        </tr>
-                        <tr>
-                            <partial name="_AnswerButton" model='new AnswerButtonModel { Answer = @Model.GameQuestion.Question.Answers[1], IdName = "B" }'/>
-                            <partial name="_AnswerButton" model='new AnswerButtonModel { Answer = @Model.GameQuestion.Question.Answers[3], IdName = "D" }'/>
-                        </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-
+                                </tr>
+                                <tr>
+                                    <partial name="_AnswerButton" model='new AnswerButtonModel { Answer = @Model.GameQuestion.Question.Answers[1], IdName = "B" }'/>
+                                    <partial name="_AnswerButton" model='new AnswerButtonModel { Answer = @Model.GameQuestion.Question.Answers[3], IdName = "D" }'/>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                }
+            }
         </div>
 
         <div class="col-4">
@@ -73,9 +76,8 @@
             </table>
         </div>
     </div>
-    
-</div>
 
+</div>
 
 
 @section Scripts
@@ -88,7 +90,7 @@
             return userChoice;
         }        
     </script>
-    
+
     <script src="~/js/api-tools.js" asp-append-version="true"></script>
     <script src="~/js/main-message-display-tools.js" asp-append-version="true"></script>
     <script src="~/js/button-tools.js" asp-append-version="true"></script>
@@ -96,6 +98,5 @@
     <script src="~/js/validate-user-choice-correct.js" asp-append-version="true"></script>
     <script src="~/js/next-step.js" asp-append-version="true"></script>
     <script src="~/js/refresh-window.js" asp-append-version="true"></script>
-    
-}
 
+}

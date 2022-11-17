@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using WhoWantsToBeAMillionaireGame.Core.DataTransferObjects;
 using WhoWantsToBeAMillionaireGame.DataBase.Entities;
-using WhoWantsToBeAMillionaireGame.Models;
 
 namespace WhoWantsToBeAMillionaireGame.MappingProfiles;
 

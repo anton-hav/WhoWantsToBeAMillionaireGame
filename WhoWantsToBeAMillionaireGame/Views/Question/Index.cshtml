@@ -11,7 +11,7 @@
 
 <div class="d-flex mb-3">
     <div class="p-2">
-        <a type="button" class="btn btn-link" asp-controller="Question" asp-action="Create">Create new</a>
+        <a type="button" class="btn btn-primary" asp-controller="Question" asp-action="Create">Create new</a>
     </div>
     <div class="ms-auto p-2">
         <a type="button" class="btn btn-primary" asp-controller="Question" asp-action="AddQuestionsFromSourceFile">Load questions from source</a>
@@ -19,28 +19,17 @@
 </div>
 
 
-
-
-
 @if (Model.Any())
 {
-    var headerText = "";
-    foreach (var status in new[] {true, false})
+    foreach (var status in new[] { true, false })
     {
-        if (status)
-        {
-            headerText = "Questions available in the game";
-        }
-        else
-        {
-            headerText = "Questions unavailable in the game";
-        }
+        var headerText = status ? "Questions available in the game" : "Questions unavailable in the game";
 
         if (Model.Any(question => question.IsEnable.Equals(status)))
         {
             <div class="row m-3">
                 <h3>@headerText</h3>
-                
+
                 <table class="table table-sm">
                     <thead>
                     <tr>
@@ -73,7 +62,7 @@
                                         </div>
                                     </td>
                                 </tr>
-                                    i++;
+                                i++;
                             }
                         }
                     }
@@ -82,7 +71,4 @@
             </div>
         }
     }
-
-    
-    
 }

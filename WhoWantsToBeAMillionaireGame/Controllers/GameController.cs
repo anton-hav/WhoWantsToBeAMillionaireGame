@@ -1,255 +1,245 @@
-﻿using System.Net;
-using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using Serilog;
 using WhoWantsToBeAMillionaireGame.Core.Abstractions;
-using WhoWantsToBeAMillionaireGame.DataBase.Entities;
 using WhoWantsToBeAMillionaireGame.Models;
 using WhoWantsToBeAMillionaireGame.SessionUtils;
 
-namespace WhoWantsToBeAMillionaireGame.Controllers
+namespace WhoWantsToBeAMillionaireGame.Controllers;
+
+public class GameController : Controller
 {
-    public class GameController : Controller
+    private readonly IMapper _mapper;
+    private readonly IGameService _gameService;
+
+    private const string GameSessionKey = "_Game";
+
+    public GameController(IMapper mapper,
+        IGameService gameService)
     {
-        private readonly IMapper _mapper;
-        private readonly IGameService _gameService;
+        _mapper = mapper;
+        _gameService = gameService;
+    }
 
-        private const string GameSessionKey = "_Game";
-
-        public GameController(IMapper mapper,
-            IGameService gameService)
+    [HttpGet]
+    public async Task<IActionResult> Index()
+    {
+        try
         {
-            _mapper = mapper;
-            _gameService = gameService;
-        }
+            var isSucceed = HttpContext.Session.TryGetValue<GameSession>(GameSessionKey, out var gameSession);
 
-        [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            try
+            if (!isSucceed)
             {
-
-                var isSucceed = HttpContext.Session.TryGetValue<GameSession>(GameSessionKey, out var gameSession);
-
-                //todo: add a middle page with information about the end of the waiting time
-                if (!isSucceed)
+                gameSession = new GameSession
                 {
-                    gameSession = new GameSession()
-                    {
-                        GameId = Guid.NewGuid(),
-                        UserChoiceId = Guid.Empty,
-                        QuestionNumber = 1,
-                        IsTookMoney = false
-                    };
-                    HttpContext.Session.Set<GameSession>(GameSessionKey, gameSession);
-                    await _gameService.CreateNewGameAsync(gameSession.GameId);
-                }
-
-                var dto = await _gameService.GetGameById(gameSession.GameId);
-                var model = _mapper.Map<GameModel>(dto);
-                model.UserChoice = gameSession.UserChoiceId;
-
-                return View(model);
+                    GameId = Guid.NewGuid(),
+                    UserChoiceId = Guid.Empty,
+                    QuestionNumber = 1,
+                    IsTookMoney = false
+                };
+                HttpContext.Session.Set(GameSessionKey, gameSession);
+                await _gameService.CreateNewGameAsync(gameSession.GameId);
             }
-            catch (Exception e)
-            {
-                Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
-                return StatusCode(500);
-            }
+
+            var dto = await _gameService.GetGameById(gameSession.GameId);
+            var model = _mapper.Map<GameModel>(dto);
+            model.UserChoice = gameSession.UserChoiceId;
+
+            return View(model);
         }
-
-        [HttpPost]
-        public async Task<IActionResult> IsUserChoiceCorrect([FromBody]Guid userChoice)
+        catch (Exception e)
         {
-            try
-            {
-                var gameSession = HttpContext.Session.Get<GameSession>(GameSessionKey);
-                if (gameSession != null)
-                {
-                    gameSession.UserChoiceId = userChoice;
-                    HttpContext.Session.Set<GameSession>(GameSessionKey, gameSession);
-                }
-
-                var isCorrect = await _gameService.IsAnswerCorrect(userChoice);
-                return Ok(isCorrect);
-            }
-            catch (Exception e)
-            {
-                Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
-                return StatusCode(500);
-            }
+            Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
+            return StatusCode(500);
         }
+    }
 
-        [HttpGet]
-        public IActionResult GetCorrectAnswerId()
+    [HttpPost]
+    public async Task<IActionResult> IsUserChoiceCorrect([FromBody] Guid userChoice)
+    {
+        try
         {
-            try
+            var gameSession = HttpContext.Session.Get<GameSession>(GameSessionKey);
+            if (gameSession != null)
             {
-                
-                var isSucceed = HttpContext.Session.TryGetValue<GameSession>(GameSessionKey, out var gameSession);
-
-                //todo: add a middle page with information about the end of the waiting time
-                if (!isSucceed)
-                    RedirectToAction("Index", "Home");
-
-                var correctAnswerId = _gameService.GetIdForCorrectAnswerOfCurrentQuestionByGameIdAsync(gameSession.GameId);
-                return Ok(correctAnswerId);
+                gameSession.UserChoiceId = userChoice;
+                HttpContext.Session.Set(GameSessionKey, gameSession);
             }
-            catch (Exception e)
-            {
-                Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
-                return StatusCode(500);
-            }
+
+            var isCorrect = await _gameService.IsAnswerCorrect(userChoice);
+            return Ok(isCorrect);
         }
-
-        [HttpGet]
-        public IActionResult GameOver()
+        catch (Exception e)
         {
-            try
-            {
-                HttpContext.Session.Remove(GameSessionKey);
-                return RedirectToAction("Index", "Home");
-            }
-            catch (Exception e)
-            {
-                Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
-                return StatusCode(500);
-            }
+            Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
+            return StatusCode(500);
         }
+    }
 
-        [HttpGet]
-        public async Task<IActionResult> MarkGameCurrentQuestionAsSuccessful()
-        {
-            try
-            {
-                var isSucceed = HttpContext.Session.TryGetValue<GameSession>(GameSessionKey, out var gameSession);
-
-                //todo: add a middle page with information about the end of the waiting time
-                if (!isSucceed)
-                    RedirectToAction("Index", "Home");
-                
-                var result = await _gameService.MarkCurrentGameQuestionAsSuccessful(gameSession.GameId);
-                return Ok(result != 0);
-            }
-            catch (Exception e)
-            {
-                Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
-                return StatusCode(500);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult GetCurrentQuestionNumber()
-        {
-            try
-            {
-                var isSucceed = HttpContext.Session.TryGetValue<GameSession>(GameSessionKey, out var gameSession);
-
-                //todo: add a middle page with information about the end of the waiting time
-                if (!isSucceed)
-                    RedirectToAction("Index", "Home");
-
-                return Ok(gameSession.QuestionNumber);
-            }
-            catch (Exception e)
-            {
-                Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
-                return StatusCode(500);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult TookMoney()
-        {
-            try
-            {
-                var isSucceed = HttpContext.Session.TryGetValue<GameSession>(GameSessionKey, out var gameSession);
-
-                //todo: add a middle page with information about the end of the waiting time
-                if (!isSucceed)
-                    RedirectToAction("Index", "Home");
-
-                gameSession.IsTookMoney = true;
-
-                HttpContext.Session.Set<GameSession>(GameSessionKey, gameSession);
-
-                return Ok(true);
-            }
-            catch (Exception e)
-            {
-                Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
-                return StatusCode(500);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult IsUserTookMoney()
-        {
-            try
-            {
-                var isSucceed = HttpContext.Session.TryGetValue<GameSession>(GameSessionKey, out var gameSession);
-
-                //todo: add a middle page with information about the end of the waiting time
-                if (!isSucceed)
-                    RedirectToAction("Index", "Home");
-
-                return Ok(gameSession.IsTookMoney);
-            }
-            catch (Exception e)
-            {
-                Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
-                return StatusCode(500);
-            }
-        }
-
-        [HttpGet]
-        public IActionResult GetNextGameQuestion()
-        {
-            try
-            {
-                var isSucceed = HttpContext.Session.TryGetValue<GameSession>(GameSessionKey, out var gameSession);
-
-                //todo: add a middle page with information about the end of the waiting time
-                if (!isSucceed)
-                    RedirectToAction("Index", "Home");
-                
-                var gameQuestion = _gameService.GetCurrentQuestionByGameIdAsync(gameSession.GameId);
-
-                gameSession.UserChoiceId = Guid.Empty;
-                gameSession.QuestionNumber++;
-
-                HttpContext.Session.Set<GameSession>(GameSessionKey, gameSession);
-
-                return Ok(gameQuestion);
-            }
-            catch (ArgumentException ex)
-            {
-                var questionNumber = GetQuestionNumberFromSession();
-                if (questionNumber.Equals(15))
-                {
-                    return Ok();
-                }
-
-                Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
-                return StatusCode(500);
-            }
-            catch (Exception ex)
-            {
-                Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
-                return StatusCode(500);
-            }
-        }
-
-        private int GetQuestionNumberFromSession()
+    [HttpGet]
+    public IActionResult GetCorrectAnswerId()
+    {
+        try
         {
             var isSucceed = HttpContext.Session.TryGetValue<GameSession>(GameSessionKey, out var gameSession);
 
             //todo: add a middle page with information about the end of the waiting time
             if (!isSucceed)
-                throw new ArgumentException("Failed to get value from session find session.");
+                RedirectToAction("Index", "Home");
 
-            return gameSession.QuestionNumber;
+            var correctAnswerId = _gameService.GetIdForCorrectAnswerOfCurrentQuestionByGameIdAsync(gameSession.GameId);
+            return Ok(correctAnswerId);
         }
+        catch (Exception e)
+        {
+            Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
+            return StatusCode(500);
+        }
+    }
+
+    [HttpGet]
+    public IActionResult GameOver()
+    {
+        try
+        {
+            HttpContext.Session.Remove(GameSessionKey);
+            return RedirectToAction("Index", "Home");
+        }
+        catch (Exception e)
+        {
+            Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
+            return StatusCode(500);
+        }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> MarkGameCurrentQuestionAsSuccessful()
+    {
+        try
+        {
+            var isSucceed = HttpContext.Session.TryGetValue<GameSession>(GameSessionKey, out var gameSession);
+
+            //todo: add a middle page with information about the end of the waiting time
+            if (!isSucceed)
+                RedirectToAction("Index", "Home");
+
+            var result = await _gameService.MarkCurrentGameQuestionAsSuccessful(gameSession.GameId);
+            return Ok(result != 0);
+        }
+        catch (Exception e)
+        {
+            Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
+            return StatusCode(500);
+        }
+    }
+
+    [HttpGet]
+    public IActionResult GetCurrentQuestionNumber()
+    {
+        try
+        {
+            var isSucceed = HttpContext.Session.TryGetValue<GameSession>(GameSessionKey, out var gameSession);
+
+            //todo: add a middle page with information about the end of the waiting time
+            if (!isSucceed)
+                RedirectToAction("Index", "Home");
+
+            return Ok(gameSession.QuestionNumber);
+        }
+        catch (Exception e)
+        {
+            Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
+            return StatusCode(500);
+        }
+    }
+
+    [HttpGet]
+    public IActionResult TookMoney()
+    {
+        try
+        {
+            var isSucceed = HttpContext.Session.TryGetValue<GameSession>(GameSessionKey, out var gameSession);
+
+            //todo: add a middle page with information about the end of the waiting time
+            if (!isSucceed)
+                RedirectToAction("Index", "Home");
+
+            gameSession.IsTookMoney = true;
+
+            HttpContext.Session.Set(GameSessionKey, gameSession);
+
+            return Ok(true);
+        }
+        catch (Exception e)
+        {
+            Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
+            return StatusCode(500);
+        }
+    }
+
+    [HttpGet]
+    public IActionResult IsUserTookMoney()
+    {
+        try
+        {
+            var isSucceed = HttpContext.Session.TryGetValue<GameSession>(GameSessionKey, out var gameSession);
+
+            //todo: add a middle page with information about the end of the waiting time
+            if (!isSucceed)
+                RedirectToAction("Index", "Home");
+
+            return Ok(gameSession.IsTookMoney);
+        }
+        catch (Exception e)
+        {
+            Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
+            return StatusCode(500);
+        }
+    }
+
+    [HttpGet]
+    public IActionResult GetNextGameQuestion()
+    {
+        try
+        {
+            var isSucceed = HttpContext.Session.TryGetValue<GameSession>(GameSessionKey, out var gameSession);
+
+            //todo: add a middle page with information about the end of the waiting time
+            if (!isSucceed)
+                RedirectToAction("Index", "Home");
+
+            var gameQuestion = _gameService.GetCurrentQuestionByGameIdAsync(gameSession.GameId);
+
+            gameSession.UserChoiceId = Guid.Empty;
+            gameSession.QuestionNumber++;
+
+            HttpContext.Session.Set(GameSessionKey, gameSession);
+
+            return Ok(gameQuestion);
+        }
+        catch (ArgumentException ex)
+        {
+            var questionNumber = GetQuestionNumberFromSession();
+            if (questionNumber.Equals(15)) return Ok();
+
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            return StatusCode(500);
+        }
+        catch (Exception ex)
+        {
+            Log.Error($"{ex.Message}. {Environment.NewLine} {ex.StackTrace}");
+            return StatusCode(500);
+        }
+    }
+
+    private int GetQuestionNumberFromSession()
+    {
+        var isSucceed = HttpContext.Session.TryGetValue<GameSession>(GameSessionKey, out var gameSession);
+
+        //todo: add a middle page with information about the end of the waiting time
+        if (!isSucceed)
+            throw new ArgumentException("Failed to get value from session find session.");
+
+        return gameSession.QuestionNumber;
     }
 }

@@ -17,16 +17,6 @@ public class AnswerService : IAnswerService
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<AnswerDto> GetAnswerByIdAsync(Guid id)
-    {
-        throw new NotImplementedException();
-    }
-
-    public async Task<bool> IsAnswerExistAsync(string text)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<bool> IsAnswerCorrect(Guid id)
     {
         var entity = await _unitOfWork.Answer.GetByIdAsync(id);
@@ -35,21 +25,11 @@ public class AnswerService : IAnswerService
         return entity.IsCorrect;
     }
 
-    public async Task<int> CreateAnswerAsync(AnswerDto dto)
-    {
-        throw new NotImplementedException();
-    }
-
     public async Task<int> CreateRangeOfAnswersAsync(List<AnswerDto> answers)
     {
         var entities = _mapper.Map<List<Answer>>(answers);
         await _unitOfWork.Answer.AddRangeAsync(entities);
         var result = await _unitOfWork.Commit();
         return result;
-    }
-
-    public async Task<int> UpdateAsync(Guid id, AnswerDto dto)
-    {
-        throw new NotImplementedException();
     }
 }

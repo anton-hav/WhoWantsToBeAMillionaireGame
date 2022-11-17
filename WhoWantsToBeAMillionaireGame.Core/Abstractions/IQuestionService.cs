@@ -15,7 +15,6 @@ public interface IQuestionService
     Task<int> AggregateQuestionsFromExternalSourceAsync();
 
     //UPDATE
-    Task<int> UpdateAsync(Guid id, QuestionDto dto);
     Task<int> ChangeAvailabilityAsync(Guid id, bool newValue);
 
     //REMOVE

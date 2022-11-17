@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.IdentityModel.Tokens;
 using WhoWantsToBeAMillionaireGame.Core;
 using WhoWantsToBeAMillionaireGame.Core.Abstractions;
 using WhoWantsToBeAMillionaireGame.Core.DataTransferObjects;
@@ -16,20 +15,15 @@ public class GameService : IGameService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IAnswerService _answerService;
 
-    public GameService(IMapper mapper, 
-        IQuestionService questionService, 
-        IUnitOfWork unitOfWork, 
+    public GameService(IMapper mapper,
+        IQuestionService questionService,
+        IUnitOfWork unitOfWork,
         IAnswerService answerService)
     {
         _mapper = mapper;
         _questionService = questionService;
         _unitOfWork = unitOfWork;
         _answerService = answerService;
-    }
-    
-    public async Task<bool> IsUnfinishedGameExistById(Guid id)
-    {
-        throw new NotImplementedException();
     }
 
     public async Task<GameDto> GetGameById(Guid id)
@@ -50,7 +44,7 @@ public class GameService : IGameService
 
         return dto;
     }
-    
+
     public async Task<bool> IsAnswerCorrect(Guid answerId)
     {
         var isCorrect = await _answerService.IsAnswerCorrect(answerId);
@@ -67,7 +61,7 @@ public class GameService : IGameService
             .Include(gq => gq.Question.Answers.Where(answer => answer.IsCorrect.Equals(true)))
             .AsNoTracking()
             .FirstOrDefault();
-        
+
         if (correctAnswer == null) throw new ArgumentException("Failed to find the correct answer in the database.");
 
         return correctAnswer.Question.Answers.First().Id;
@@ -92,7 +86,7 @@ public class GameService : IGameService
 
     public async Task<int> CreateNewGameAsync(Guid id)
     {
-        var game = new Game()
+        var game = new Game
         {
             Id = id
         };
@@ -104,21 +98,20 @@ public class GameService : IGameService
             _unitOfWork.Game.AddAsync(game)
         };
         var gameQuestions = questions
-            .Select(q => new GameQuestion()
+            .Select(q => new GameQuestion
             {
                 Id = Guid.NewGuid(),
                 GameId = game.Id,
                 IsSuccessful = false,
-                QuestionId = q.Id,
+                QuestionId = q.Id
             });
 
         addDbContextTasks.Add(_unitOfWork.GameQuestion.AddRangeAsync(gameQuestions));
 
 
         await Task.WhenAll(addDbContextTasks);
-        
-        return await _unitOfWork.Commit();
 
+        return await _unitOfWork.Commit();
     }
 
     public async Task<int> MarkCurrentGameQuestionAsSuccessful(Guid gameId)
@@ -132,15 +125,13 @@ public class GameService : IGameService
         var patchList = new List<PatchModel>();
 
         if (gameQuestion is { IsSuccessful: false })
-        {
             patchList.Add(new PatchModel
             {
                 PropertyName = nameof(gameQuestion.IsSuccessful),
                 PropertyValue = true
             });
-        }
-
-        await _unitOfWork.GameQuestion.PatchAsync(gameQuestion.Id, patchList);
+        if (gameQuestion != null)
+            await _unitOfWork.GameQuestion.PatchAsync(gameQuestion.Id, patchList);
         return await _unitOfWork.Commit();
     }
 }

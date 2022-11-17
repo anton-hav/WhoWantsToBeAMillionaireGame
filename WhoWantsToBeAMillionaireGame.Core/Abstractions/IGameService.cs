@@ -5,7 +5,6 @@ namespace WhoWantsToBeAMillionaireGame.Core.Abstractions;
 public interface IGameService
 {
     // READ
-    Task<bool> IsUnfinishedGameExistById(Guid id);
     Task<GameDto> GetGameById(Guid id);
     Task<bool> IsAnswerCorrect(Guid answerId);
     Guid GetIdForCorrectAnswerOfCurrentQuestionByGameIdAsync(Guid gameId);
