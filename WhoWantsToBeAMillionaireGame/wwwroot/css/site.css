@@ -63,3 +63,16 @@ body {
     margin: 4px 2px;
     border-radius: 100%;
 }
+
+.round-button-play {
+    width: 150px;
+    height: 150px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    box-shadow: -5px 5px 10px grey;
+    padding: 50px;
+    text-align: center;
+    font-size: 24px;
+    margin: 4px 2px;
+    border-radius: 100%;
+}
