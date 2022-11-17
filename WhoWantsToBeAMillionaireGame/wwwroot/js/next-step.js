@@ -1,5 +1,6 @@
 ﻿async function showNewQuestion() {
     hideNextStepButtonButton();
+    showGiveMeMyMoneyButtonButton();
     setPropertyForAnswerButtonsByDefault();
     let isMarkSucceed = await markQuestionAsSuccessfulOnServerAsync();
     let gameQuestion;

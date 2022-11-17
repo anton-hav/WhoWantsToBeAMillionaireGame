@@ -40,6 +40,7 @@ namespace WhoWantsToBeAMillionaireGame.Controllers
                         GameId = Guid.NewGuid(),
                         UserChoiceId = Guid.Empty,
                         QuestionNumber = 1,
+                        IsTookMoney = false
                     };
                     HttpContext.Session.Set<GameSession>(GameSessionKey, gameSession);
                     await _gameService.CreateNewGameAsync(gameSession.GameId);
@@ -139,7 +140,7 @@ namespace WhoWantsToBeAMillionaireGame.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetCurrentQuestionNumber()
+        public IActionResult GetCurrentQuestionNumber()
         {
             try
             {
@@ -150,6 +151,50 @@ namespace WhoWantsToBeAMillionaireGame.Controllers
                     RedirectToAction("Index", "Home");
 
                 return Ok(gameSession.QuestionNumber);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
+                return StatusCode(500);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult TookMoney()
+        {
+            try
+            {
+                var isSucceed = HttpContext.Session.TryGetValue<GameSession>(GameSessionKey, out var gameSession);
+
+                //todo: add a middle page with information about the end of the waiting time
+                if (!isSucceed)
+                    RedirectToAction("Index", "Home");
+
+                gameSession.IsTookMoney = true;
+
+                HttpContext.Session.Set<GameSession>(GameSessionKey, gameSession);
+
+                return Ok(true);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"{e.Message}. {Environment.NewLine} {e.StackTrace}");
+                return StatusCode(500);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult IsUserTookMoney()
+        {
+            try
+            {
+                var isSucceed = HttpContext.Session.TryGetValue<GameSession>(GameSessionKey, out var gameSession);
+
+                //todo: add a middle page with information about the end of the waiting time
+                if (!isSucceed)
+                    RedirectToAction("Index", "Home");
+
+                return Ok(gameSession.IsTookMoney);
             }
             catch (Exception e)
             {

@@ -1,23 +1,28 @@
 ﻿async function validateUserChoice(userChoice) {
     let correctAnswerId = await getCorrectAnswerIdForCurrentQuestion();
     let isCorrect = await getAnswerIsCorrectFromServerByUserChoiceAsync(userChoice);
+
     if (isCorrect != undefined) {
         await paintButtons(userChoice, isCorrect, correctAnswerId);
-    }
-    if (userChoice == correctAnswerId) {
-        gameQuestion = await getCurrentQuestionNumberFromServerAsync();
-        if (gameQuestion == 15) {
-            hideNextStepButtonButton();
-            showWinningInformation();
-            showWinButtonButton();
+        hideGiveMeMyMoneyButtonButton();
+        if (userChoice == correctAnswerId) {
+            gameQuestion = await getCurrentQuestionNumberFromServerAsync();
+            if (gameQuestion == 15) {
+                hideNextStepButtonButton();
+                showWinningInformation();
+                showWinButtonButton();
+            } else {
+                showNextStepButtonButton();
+            }
         } else {
-            showNextStepButtonButton();
-        }        
+            showGameOverButton();
+            let currentQuestionNumber = await getCurrentQuestionNumberFromServerAsync();
+            showLosserInformation(currentQuestionNumber);
+        }
     } else {
-        showGameOverButton();
-        let currentQuestionNumber = await getCurrentQuestionNumberFromServerAsync();
-        showLosserInformation(currentQuestionNumber);
+        showGiveMeMyMoneyButtonButton();
     }
+    
 }
 
 async function paintButtons(userChoice, isCorrect, correctAnswerId) {
@@ -38,13 +43,24 @@ async function paintButtons(userChoice, isCorrect, correctAnswerId) {
 }
 
 function isUserChoiceCorrect(userChoice) {
-    switchDisableStateForAnswerButtons(true);
+    switchDisableStateForAnswerButtons(true);    
     (async () => await validateUserChoice(userChoice))();
 }
 
-(() => {
+(async () => {
+        let isTookMoney = await checkIsUserTookMoneyOnServerAsync();
+    if (isTookMoney) {
+        giveMeMyMoney()
+    } else {
         let userChoice = window.getUserChoiceFromModel();
         if (userChoice !== "00000000-0000-0000-0000-000000000000") {
             isUserChoiceCorrect(userChoice);
+        } else {
+            gameQuestion = await getCurrentQuestionNumberFromServerAsync();
+            if (gameQuestion > 1) {
+                showGiveMeMyMoneyButtonButton();
+            }
         }
+    }
+        
 })();

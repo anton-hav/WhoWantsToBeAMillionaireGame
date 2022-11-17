@@ -27,8 +27,11 @@
                 <div class="d-grid gap-2 col-6 offset-md-5">
                     <a type="button" class="btn btn-warning round-button-winner" asp-controller="Game" asp-action="GameOver" hidden id="win-button">Win</a>
                 </div>
-            </div>
 
+            </div>
+            <div class="d-grid gap-2 col">
+                <button type="button" class="btn btn-secondary" onclick="giveMeMyMoney()" hidden id="give-me-my-money">Give me my money</button>
+            </div>
 
             <div>
                 <div class="col align-self-center text-center">
@@ -88,10 +91,11 @@
     
     <script src="~/js/api-tools.js" asp-append-version="true"></script>
     <script src="~/js/main-message-display-tools.js" asp-append-version="true"></script>
-    <script src="~/js/switch-visible-for-button.js" asp-append-version="true"></script>
-    <script src="~/js/answer-buttons-tools.js" asp-append-version="true"></script>
+    <script src="~/js/button-tools.js" asp-append-version="true"></script>
     <script src="~/js/winnings-bar-tools.js" asp-append-version="true"></script>
     <script src="~/js/validate-user-choice-correct.js" asp-append-version="true"></script>
     <script src="~/js/next-step.js" asp-append-version="true"></script>
+    <script src="~/js/refresh-window.js" asp-append-version="true"></script>
+    
 }
 

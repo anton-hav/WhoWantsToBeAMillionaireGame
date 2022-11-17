@@ -52,3 +52,23 @@ async function getCurrentQuestionNumberFromServerAsync() {
         });
     return await response.json();
 }
+
+async function checkIsUserTookMoneyOnServerAsync() {
+    let url = new URL(`${window.location.origin}/Game/IsUserTookMoney`);
+
+    let response = await fetch(url,
+        {
+            method: 'GET'
+        });
+    return await response.json();
+}
+
+async function TookMoneyOnServerAsync() {
+    let url = new URL(`${window.location.origin}/Game/TookMoney`);
+
+    let response = await fetch(url,
+        {
+            method: 'GET'
+        });
+    return await response.json();
+}
