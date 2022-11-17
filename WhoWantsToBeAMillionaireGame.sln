@@ -5,6 +5,16 @@ VisualStudioVersion = 17.3.32811.315
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhoWantsToBeAMillionaireGame", "WhoWantsToBeAMillionaireGame\WhoWantsToBeAMillionaireGame.csproj", "{493947D8-F4E2-490C-BD71-38700591A66B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhoWantsToBeAMillionaireGame.Core", "WhoWantsToBeAMillionaireGame.Core\WhoWantsToBeAMillionaireGame.Core.csproj", "{6FBB09BD-3C9C-4332-A840-D1073B610A9C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhoWantsToBeAMillionaireGame.Business", "WhoWantsToBeAMillionaireGame.Business\WhoWantsToBeAMillionaireGame.Business.csproj", "{CA51C89C-843F-49A8-B627-3F60DE56962C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhoWantsToBeAMillionaireGame.DataBase", "WhoWantsToBeAMillionaireGame.DataBase\WhoWantsToBeAMillionaireGame.DataBase.csproj", "{865B86DE-9E8D-46D1-B771-0C41FCCDBB20}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhoWantsToBeAMillionaireGame.Data.Abstractions", "WhoWantsToBeAMillionaireGame.Data.Abstractions\WhoWantsToBeAMillionaireGame.Data.Abstractions.csproj", "{0E828747-B355-42D9-AF1B-A323F568F435}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WhoWantsToBeAMillionaireGame.Data.Repositories", "WhoWantsToBeAMillionaireGame.Data.Repositories\WhoWantsToBeAMillionaireGame.Data.Repositories.csproj", "{6E0539C7-DEBE-4F4C-89A1-AB9B8A5D9982}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +25,26 @@ Global
 		{493947D8-F4E2-490C-BD71-38700591A66B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{493947D8-F4E2-490C-BD71-38700591A66B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{493947D8-F4E2-490C-BD71-38700591A66B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6FBB09BD-3C9C-4332-A840-D1073B610A9C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6FBB09BD-3C9C-4332-A840-D1073B610A9C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6FBB09BD-3C9C-4332-A840-D1073B610A9C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6FBB09BD-3C9C-4332-A840-D1073B610A9C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CA51C89C-843F-49A8-B627-3F60DE56962C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CA51C89C-843F-49A8-B627-3F60DE56962C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CA51C89C-843F-49A8-B627-3F60DE56962C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CA51C89C-843F-49A8-B627-3F60DE56962C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{865B86DE-9E8D-46D1-B771-0C41FCCDBB20}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{865B86DE-9E8D-46D1-B771-0C41FCCDBB20}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{865B86DE-9E8D-46D1-B771-0C41FCCDBB20}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{865B86DE-9E8D-46D1-B771-0C41FCCDBB20}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0E828747-B355-42D9-AF1B-A323F568F435}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0E828747-B355-42D9-AF1B-A323F568F435}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0E828747-B355-42D9-AF1B-A323F568F435}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0E828747-B355-42D9-AF1B-A323F568F435}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E0539C7-DEBE-4F4C-89A1-AB9B8A5D9982}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E0539C7-DEBE-4F4C-89A1-AB9B8A5D9982}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E0539C7-DEBE-4F4C-89A1-AB9B8A5D9982}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E0539C7-DEBE-4F4C-89A1-AB9B8A5D9982}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

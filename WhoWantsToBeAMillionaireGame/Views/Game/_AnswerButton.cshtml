@@ -1,0 +1,15 @@
+﻿@model AnswerButtonModel
+
+<td>
+    <div class="d-grid gap-2">
+        <button type="button"
+                class="btn btn-outline-dark btn-lg"
+                value="@Model.Answer.Id"
+                onclick="isUserChoiceCorrect(value)"
+                id="answer-@Model.IdName">
+            <div >
+                <span><i></i>@Model.IdName:</span> <span>@Model.Answer.Text</span>
+            </div>
+        </button>
+    </div>
+</td>

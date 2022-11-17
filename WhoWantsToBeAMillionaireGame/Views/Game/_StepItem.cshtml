@@ -1,0 +1,29 @@
+﻿@using System.Globalization
+@model (int, int)
+
+
+<tr>
+    <td>
+        <div class="d-grid gap-2 rcorners" id="winning-@Model.Item1">
+            <div class="align-self-center text-center">
+                @{
+                    var importantSteps = new List<int> { 5, 10, 15 };
+                    if (importantSteps.Contains(Model.Item1))
+                    {
+                        <span>
+                            <b>@Model.Item1:</b>
+                        </span>
+                        <span>
+                            <b>@Model.Item2.ToString("C0", new CultureInfo("pl-PL"))</b>
+                        </span>
+                    }
+                    else
+                    {
+                        <span>@Model.Item1:</span>
+                        <span>@Model.Item2.ToString("C0", new CultureInfo("pl-PL"))</span>
+                    }
+                }
+            </div>
+        </div>
+    </td>
+</tr>

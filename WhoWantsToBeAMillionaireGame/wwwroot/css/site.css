@@ -16,3 +16,63 @@ html {
 body {
   margin-bottom: 60px;
 }
+
+.rcorners {
+    border-radius: 25px;
+    border: 2px solid #73AD21;
+    padding: 5px;
+
+}
+
+.round-button-game-over {
+    width: 150px;
+    height: 150px;
+    text-align: center;
+    box-shadow: -5px 5px 10px grey;
+    padding: 35px;
+    font-size: 24px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 150px;
+}
+
+.round-button-success {
+    width: 150px;
+    height: 150px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+
+    box-shadow: -5px 5px 10px grey;
+    padding: 30px;
+    text-align: center;
+    font-size: 24px;
+    margin: 4px 2px;
+    border-radius: 100%;
+}
+
+.round-button-winner {
+    width: 150px;
+    height: 150px;
+    background: gold;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    box-shadow: -5px 5px 10px grey;
+    padding: 50px;
+    text-align: center;
+    font-size: 24px;
+    margin: 4px 2px;
+    border-radius: 100%;
+}
+
+.round-button-play {
+    width: 150px;
+    height: 150px;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    box-shadow: -5px 5px 10px grey;
+    padding: 50px;
+    text-align: center;
+    font-size: 24px;
+    margin: 4px 2px;
+    border-radius: 100%;
+}

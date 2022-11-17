@@ -6,4 +6,28 @@
     <ImplicitUsings>enable</ImplicitUsings>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="12.0.0" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="12.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="7.0.0" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="7.0.0">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Serilog.AspNetCore" Version="6.0.1" />
+    <PackageReference Include="Serilog.Sinks.File" Version="5.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\WhoWantsToBeAMillionaireGame.Business\WhoWantsToBeAMillionaireGame.Business.csproj" />
+    <ProjectReference Include="..\WhoWantsToBeAMillionaireGame.Data.Abstractions\WhoWantsToBeAMillionaireGame.Data.Abstractions.csproj" />
+    <ProjectReference Include="..\WhoWantsToBeAMillionaireGame.Data.Repositories\WhoWantsToBeAMillionaireGame.Data.Repositories.csproj" />
+    <ProjectReference Include="..\WhoWantsToBeAMillionaireGame.DataBase\WhoWantsToBeAMillionaireGame.DataBase.csproj" />
+  </ItemGroup>
+
 </Project>
