@@ -41,7 +41,7 @@ This part contains some  .gif files that show how the application work.
 </details>
 
 <details>
-  <summary>Unborning level preview</summary>
+  <summary>Unburnable level preview</summary>
   <a href="https://ibb.co/cYgg818"><img src="https://i.ibb.co/ph00KxK/unburning-level-preview.gif" alt="unburning-level-preview" border="0"></a>
 </details>
 
