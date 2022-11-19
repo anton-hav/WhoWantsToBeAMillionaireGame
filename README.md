@@ -29,6 +29,12 @@ This part contains some  .gif files that show how the application work.
 ### Add new question
 <a href="https://ibb.co/RgVBmrn"><img src="https://i.ibb.co/9pCVLKX/add-new-question.gif" alt="add-new-question" border="0"></a>
 
+### Win preview
+<a href="https://ibb.co/myVqZX2"><img src="https://i.ibb.co/R6k0rBs/win-preview.gif" alt="win-preview" border="0"></a>
+
+### Unborning level preview
+<a href="https://ibb.co/cYgg818"><img src="https://i.ibb.co/ph00KxK/unburning-level-preview.gif" alt="unburning-level-preview" border="0"></a>
+
 
 ### Gameplay preview
 
