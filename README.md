@@ -20,28 +20,42 @@ During their game, the player has two "safety nets" – if a contestant gets a q
 ## Application preview
 This part contains some  .gif files that show how the application work.
 
-### Manage questions
-<a href="https://ibb.co/yqP6yYZ"><img src="https://i.ibb.co/5L4r8nS/manage-questions.gif" alt="manage-questions" border="0"></a>
+<details>
+  <summary>Manage questions</summary>
+  <a href="https://ibb.co/yqP6yYZ"><img src="https://i.ibb.co/5L4r8nS/manage-questions.gif" alt="manage-questions" border="0"></a>
+</details>
 
-### Load question from the source file
-<a href="https://ibb.co/Snx09sb"><img src="https://i.ibb.co/C7tvT1g/load-question-from-source.gif" alt="load-question-from-source" border="0"></a>
+<details>
+  <summary>Load question from the source file</summary>
+  <a href="https://ibb.co/Snx09sb"><img src="https://i.ibb.co/C7tvT1g/load-question-from-source.gif" alt="load-question-from-source" border="0"></a>
+</details>
 
-### Add new question
-<a href="https://ibb.co/RgVBmrn"><img src="https://i.ibb.co/9pCVLKX/add-new-question.gif" alt="add-new-question" border="0"></a>
+<details>
+  <summary>Add new question</summary>
+  <a href="https://ibb.co/RgVBmrn"><img src="https://i.ibb.co/9pCVLKX/add-new-question.gif" alt="add-new-question" border="0"></a>
+</details>
 
-### Win preview
-<a href="https://ibb.co/myVqZX2"><img src="https://i.ibb.co/R6k0rBs/win-preview.gif" alt="win-preview" border="0"></a>
+<details>
+  <summary>Win preview</summary>
+  <a href="https://ibb.co/myVqZX2"><img src="https://i.ibb.co/R6k0rBs/win-preview.gif" alt="win-preview" border="0"></a>
+</details>
 
-### Unborning level preview
-<a href="https://ibb.co/cYgg818"><img src="https://i.ibb.co/ph00KxK/unburning-level-preview.gif" alt="unburning-level-preview" border="0"></a>
+<details>
+  <summary>Unborning level preview</summary>
+  <a href="https://ibb.co/cYgg818"><img src="https://i.ibb.co/ph00KxK/unburning-level-preview.gif" alt="unburning-level-preview" border="0"></a>
+</details>
+
+<details>
+  <summary>Gameplay preview</summary>
+  <a href="https://ibb.co/PFnKFk8"><img src="https://i.ibb.co/34q24KH/game-preview.gif" alt="game-preview" border="0"></a>
+</details>
+
+<details>
+  <summary>Session at work</summary>
+  <a href="https://ibb.co/PNg64X1"><img src="https://i.ibb.co/BtBCjWT/session-atwork-preview.gif" alt="session-atwork-preview" border="0"></a>
+</details>
 
 
-### Gameplay preview
-
-<a href="https://ibb.co/PFnKFk8"><img src="https://i.ibb.co/34q24KH/game-preview.gif" alt="game-preview" border="0"></a>
-
-### Session at work
-<a href="https://ibb.co/PNg64X1"><img src="https://i.ibb.co/BtBCjWT/session-atwork-preview.gif" alt="session-atwork-preview" border="0"></a>
 
 ## How to configurate
 ### 1. Change database connection string
